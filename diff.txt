@@ -1,0 +1,6 @@
+echo diff 1.out
+diff Testes/Outputs\ Esperados/1.out Meus-Outputs/1.out
+echo diff 2.out
+diff Testes/Outputs\ Esperados/2.out Meus-Outputs/2.out
+echo diff 3.out
+diff Testes/Outputs\ Esperados/3.out Meus-Outputs/3.out
