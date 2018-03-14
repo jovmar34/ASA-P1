@@ -8,6 +8,14 @@ typedef struct node{
     struct node* next;
 } vertice;
 
+vertice **sccs_list;
+
+int *stack;
+int indstack = 0;
+
+int visited;
+int *d, *h;
+
 int main() {
     int nvertices, narcos, i;
     vertice **tabela;
@@ -17,6 +25,9 @@ int main() {
     scanf("%d", &narcos);
 
     tabela = (vertice**) malloc(nvertices * sizeof(vertice*));
+
+    d = (int*) malloc(nvertices * sizeof(int));
+    h = (int*) malloc(nvertices * sizeof(int));
 
     for (i = 0; i < nvertices; i++) {
         tabela[i] = NULL;
@@ -36,11 +47,13 @@ int main() {
         tabela[origem - 1] = dest;
     }
 
-    for(i = 0; i < nvertices; i++) {
+
+
+/*    for(i = 0; i < nvertices; i++) {
         for(manel = tabela[i]; manel != NULL; manel = manel->next) {
             printf("%d %d\n", i+1, manel->id);
         }
-    }
+    } */
 
     return 0;
 }
