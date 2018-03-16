@@ -22,6 +22,7 @@ typedef struct scc_lst {
 SCC_lst *sccs_list;
 int scc_comps;
 int scc_arestas;
+int flag_scc = 0;
 
 int *stack;
 int indstack = 0;
@@ -31,6 +32,8 @@ int *d, *h;
 
 Vertice **tabela;
 int nvertices, narcos;
+
+Vertice *manel;
 
 /* ------------------------------------------------------------------------- */
 
@@ -80,6 +83,7 @@ void Tarjan_visit(int i) {
         int indv = v->id - 1;
         if (d[indv] == -1 || inStack(indv + 1)) {
             if (d[indv] == -1) Tarjan_visit(indv);
+            if(foi criada scc?) guarda ultimo vertice
             h[i] = min(h[i],h[indv]);
         }
     }
@@ -91,22 +95,22 @@ void Tarjan_visit(int i) {
         nova_componente->id = x;
         nova_componente->next = NULL;
 
-        while (x != i) {
+        while (x != i + 1) {
             Vertice *atual = (Vertice*) malloc(sizeof(Vertice));
+
             x = pop();
 
             atual->id = x;
 
             if(x < nova_componente->id) {
-                atual->next = nova_componente;
+                free(nova_componente);
                 nova_componente = atual;
             }
             else {
-                Vertice *temp = nova_componente->next;
-                nova_componente->next = atual;
-                atual->next = temp;
+                free(atual);
             }
         }
+
         addSCC(nova_componente);
     }
 }
@@ -160,7 +164,23 @@ int main() {
         tabela[origem - 1] = dest;
     }
 
+/*    printf("\n");
+    for(i = 0; i < nvertices; i++) {
+        printf("%d", i + 1);
+        for(manel = tabela[i]; manel != NULL; manel = manel->next) {
+            printf("\t%d ", manel->id);
+        }
+        printf("\n");
+    } */
+
     Tarjan();
+
+    for(SCC_lst *lol = sccs_list; lol != NULL; lol = lol->next) {
+        for(manel = lol->componente; manel != NULL; manel = manel->next) {
+            printf("%d ", manel->id);
+        }
+        printf("\n");
+    }
 
     printf("%d\n", scc_comps);
 
