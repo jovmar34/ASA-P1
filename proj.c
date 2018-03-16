@@ -21,12 +21,16 @@ typedef struct scc_lst {
 
 SCC_lst *sccs_list;
 int scc_comps;
+int scc_arestas;
 
 int *stack;
 int indstack = 0;
 
 int visited;
 int *d, *h;
+
+Vertice **tabela;
+int nvertices, narcos;
 
 /* ------------------------------------------------------------------------- */
 
@@ -44,7 +48,7 @@ void addSCC(Vertice *comp_nova) {
 
 void push(int id_vert) {
     stack[indstack] = id_vert;
-    id_vert++;
+    indstack++;
 }
 
 int pop() {
@@ -52,12 +56,82 @@ int pop() {
     return stack[indstack];
 }
 
+int inStack(int ind) {
+    for (int i = 0; i < indstack; i++) {
+        if (stack[i] == ind) return 1;
+    }
+    return 0;
+}
+
+int min(int a, int b) {
+    return (a < b ? a : b);
+}
+
+void Tarjan_visit(int i) {
+    Vertice *v;
+
+    h[i] = d[i] = visited;
+
+    visited++;
+
+    push(i+1);
+
+    for (v = tabela[i]; v != NULL; v = v->next) {
+        int indv = v->id - 1;
+        if (d[indv] == -1 || inStack(indv + 1)) {
+            if (d[indv] == -1) Tarjan_visit(indv);
+            h[i] = min(h[i],h[indv]);
+        }
+    }
+
+    if (d[i] == h[i]) {
+        int x = pop();
+        Vertice *nova_componente = (Vertice*) malloc(sizeof(Vertice));
+
+        nova_componente->id = x;
+        nova_componente->next = NULL;
+
+        while (x != i) {
+            Vertice *atual = (Vertice*) malloc(sizeof(Vertice));
+            x = pop();
+
+            atual->id = x;
+
+            if(x < nova_componente->id) {
+                atual->next = nova_componente;
+                nova_componente = atual;
+            }
+            else {
+                Vertice *temp = nova_componente->next;
+                nova_componente->next = atual;
+                atual->next = temp;
+            }
+        }
+        addSCC(nova_componente);
+    }
+}
+
+void Tarjan() {
+    visited = 0;
+    stack = (int*) malloc(nvertices*sizeof(int));
+    int i;
+
+    for (i = 0; i < nvertices; i++) {
+        d[i] = -1;
+    }
+
+    for (i = 0; i < nvertices; i++) {
+        if (d[i] == -1) {
+            Tarjan_visit(i);
+        }
+    }
+}
+
 /* ------------------------------------------------------------------------- */
 
 
 int main() {
-    int nvertices, narcos, i;
-    Vertice **tabela;
+    int i;
 
     scanf("%d", &nvertices);
     scanf("%d", &narcos);
@@ -66,6 +140,7 @@ int main() {
 
     d = (int*) malloc(nvertices * sizeof(int));
     h = (int*) malloc(nvertices * sizeof(int));
+    sccs_list = NULL;
 
     for (i = 0; i < nvertices; i++) {
         tabela[i] = NULL;
@@ -85,13 +160,10 @@ int main() {
         tabela[origem - 1] = dest;
     }
 
+    Tarjan();
 
-
-/*    for(i = 0; i < nvertices; i++) {
-        for(manel = tabela[i]; manel != NULL; manel = manel->next) {
-            printf("%d %d\n", i+1, manel->id);
-        }
-    } */
+    printf("%d\n", scc_comps);
 
     return 0;
 }
+
