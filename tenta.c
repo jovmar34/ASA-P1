@@ -34,6 +34,7 @@ Vertice **tabela;
 int nvertices, narcos;
 
 Vertice *manel;
+Vertice *bridge = NULL;
 
 /* ------------------------------------------------------------------------- */
 
@@ -83,7 +84,10 @@ void Tarjan_visit(int i) {
         int indv = v->id - 1;
         if (d[indv] == -1 || inStack(indv + 1)) {
             if (d[indv] == -1) Tarjan_visit(indv);
-            if(foi criada scc?) guarda ultimo vertice
+            if(flag_scc) {
+                flag_scc = 0;
+                bridge = v;
+            }
             h[i] = min(h[i],h[indv]);
         }
     }
@@ -92,8 +96,10 @@ void Tarjan_visit(int i) {
         int x = pop();
         Vertice *nova_componente = (Vertice*) malloc(sizeof(Vertice));
 
+        flag_scc = 1;
+
         nova_componente->id = x;
-        nova_componente->next = NULL;
+        nova_componente->next = bridge;
 
         while (x != i + 1) {
             Vertice *atual = (Vertice*) malloc(sizeof(Vertice));
@@ -103,6 +109,7 @@ void Tarjan_visit(int i) {
             atual->id = x;
 
             if(x < nova_componente->id) {
+                atual->next = nova_componente->next;
                 free(nova_componente);
                 nova_componente = atual;
             }
@@ -176,10 +183,7 @@ int main() {
     Tarjan();
 
     for(SCC_lst *lol = sccs_list; lol != NULL; lol = lol->next) {
-        for(manel = lol->componente; manel != NULL; manel = manel->next) {
-            printf("%d ", manel->id);
-        }
-        printf("\n");
+        if (lol->componente->next != NULL) printf("%d %d\n", lol->componente->id, lol->componente->next->id);
     }
 
     printf("%d\n", scc_comps);
