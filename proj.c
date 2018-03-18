@@ -111,9 +111,9 @@ int Tarjan_visit(int i) {
 
     if (d[i] == h[i]) {
         int x = pop();
-        int temp;
+        int temp = x;
 
-        while (x != i + 1) {
+        while (temp != i + 1) {
             temp = pop();
 
             if(temp < x) {
@@ -168,8 +168,8 @@ void freeSCC_lst(SCC_lst *ptr_scc) {
 
 int main() {
     int i;
-    SCC_lst *lol;
-    Vertice *manel;
+    /*SCC_lst *lol;
+    Vertice *manel;*/
 
     scanf("%d", &nvertices);
     scanf("%d", &narcos);
@@ -201,11 +201,11 @@ int main() {
     Tarjan();
 
     printf("%d\n%d\n", scc_comps, scc_arestas);
-    for(lol = sccs_list; lol != NULL; lol = lol->next) {
+    /*for(lol = sccs_list; lol != NULL; lol = lol->next) {
         for(manel = lol->novasAdjs; manel != NULL; manel = manel->next) {
             printf("%d %d\n", lol->id, manel->id);
         }
-    }
+    }*/
 
     for (i = 0; i < nvertices; i++) {
         freeVertices(tabela[i]);
