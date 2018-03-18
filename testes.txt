@@ -1,4 +1,4 @@
-echo reunning in.txt
+echo running in.txt
 ./proj < Testes/Inputs/in.txt > Meus-Outputs/out.txt
 echo running 1.in
 ./proj < Testes/Inputs/1.in > Meus-Outputs/1.out
