@@ -1,5 +1,4 @@
-testar scc's (prints)
-tratar novas arestas (procurar ligacoes entrs scc's)
+tratar das arestas que nao descobrem componetes
 imprimir arestas
 fazer relatório
 

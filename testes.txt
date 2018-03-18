@@ -6,3 +6,13 @@ echo running 2.in
 ./proj < Testes/Inputs/2.in > Meus-Outputs/2.out
 echo running 3.in
 ./proj < Testes/Inputs/3.in > Meus-Outputs/3.out
+echo running st01.in
+./proj < Testes/Inputs/students-tests/st01.in > Meus-Outputs/st01.out
+echo running st02.in
+./proj < Testes/Inputs/students-tests/st02.in > Meus-Outputs/st02.out
+echo running st03.in
+./proj < Testes/Inputs/students-tests/st03.in > Meus-Outputs/st03.out
+echo running st04.in
+./proj < Testes/Inputs/students-tests/st04.in > Meus-Outputs/st04.out
+echo running st05.in
+./proj < Testes/Inputs/students-tests/st05.in > Meus-Outputs/st05.out

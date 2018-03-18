@@ -1,6 +1,9 @@
 
-proj: proj.c
-	gcc -g -Wall -pedantic -o proj proj.c
+proj: proj.o
+	gcc -g -Wall -pedantic -o proj proj.o
+
+proj.o: proj.c
+	gcc -g -Wall -pedantic -c proj.c
 
 run:
 	mkdir Meus-Outputs;

@@ -1,6 +1,18 @@
+echo diff out.txt
+diff Testes/Outputs_Esperados/out.txt Meus-Outputs/out.txt
 echo diff 1.out
-diff Testes/Outputs\ Esperados/1.out Meus-Outputs/1.out
+diff Testes/Outputs_Esperados/1.out Meus-Outputs/1.out
 echo diff 2.out
-diff Testes/Outputs\ Esperados/2.out Meus-Outputs/2.out
+diff Testes/Outputs_Esperados/2.out Meus-Outputs/2.out
 echo diff 3.out
-diff Testes/Outputs\ Esperados/3.out Meus-Outputs/3.out
+diff Testes/Outputs_Esperados/3.out Meus-Outputs/3.out
+echo diff st01.out
+diff Testes/Outputs_Esperados/st01.out Meus-Outputs/st01.out
+echo diff st02.out
+diff Testes/Outputs_Esperados/st02.out Meus-Outputs/st02.out
+echo diff st03.out
+diff Testes/Outputs_Esperados/st03.out Meus-Outputs/st03.out
+echo diff st04.out
+diff Testes/Outputs_Esperados/st04.out Meus-Outputs/st04.out
+echo diff st05.out
+diff Testes/Outputs\ Esperados/st05.out Meus-Outputs/st05.out

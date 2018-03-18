@@ -32,9 +32,6 @@ int visited, *d, *h;
 Vertice **tabela;
 int nvertices, narcos;
 
-SCC_lst *lol;
-Vertice *manel;
-
 /* ------------------------------------------------------------------------- */
 
 
@@ -171,6 +168,8 @@ void freeSCC_lst(SCC_lst *ptr_scc) {
 
 int main() {
     int i;
+    SCC_lst *lol;
+    Vertice *manel;
 
     scanf("%d", &nvertices);
     scanf("%d", &narcos);
