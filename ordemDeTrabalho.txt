@@ -1,4 +1,0 @@
-tratar das arestas que nao descobrem componetes
-imprimir arestas
-fazer relatório
-

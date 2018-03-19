@@ -15,4 +15,4 @@ diff Testes/Outputs_Esperados/st03.out Meus-Outputs/st03.out
 echo diff st04.out
 diff Testes/Outputs_Esperados/st04.out Meus-Outputs/st04.out
 echo diff st05.out
-diff Testes/Outputs\ Esperados/st05.out Meus-Outputs/st05.out
+diff Testes/Outputs_Esperados/st05.out Meus-Outputs/st05.out
