@@ -6,7 +6,6 @@
 
 typedef struct node{
     int id;
-    int inStack;
     struct node* next;
 } Vertice;
 
@@ -25,6 +24,7 @@ int *componentes;
 
 int *stack;
 int indstack;
+int *inStack;
 
 int visited;
 int *d, *h;
@@ -37,7 +37,7 @@ int *d, *h;
 void push(int id_vert) {
     stack[indstack] = id_vert;
     indstack++;
-    tabela[id_vert-1]->inStack = 1;
+    inStack[id_vert - 1] = 1;
 }
 
 
@@ -45,13 +45,8 @@ int pop() {
     int res;
     indstack--;
     res = stack[indstack];
-    tabela[res-1]->inStack = 0;
+    inStack[res - 1] = 0;
     return res;
-}
-
-
-int inStack(int ind) {
-    return tabela[ind-1]->inStack;
 }
 
 
@@ -140,7 +135,7 @@ int Tarjan_visit(int i) {
     for (v = tabela[i]; v != NULL; v = v->next) {
         int indv = v->id - 1;
 
-        if (d[indv] == -1 || inStack(indv + 1)) {
+        if (d[indv] == -1 || inStack[indv]) {
             if (d[indv] == -1) {
                 if (Tarjan_visit(indv)) {
                     scc_arestas++;
@@ -179,10 +174,12 @@ void Tarjan() {
     componentes = (int*) malloc(nvertices * sizeof(int));
 
     stack = (int*) malloc(nvertices*sizeof(int));
+    inStack = (int*) malloc(nvertices*sizeof(int));
     indstack = 0;
 
     for (i = 0; i < nvertices; i++) {
         d[i] = -1;
+        inStack[i] = 0;
     }
 
     for (i = 0; i < nvertices; i++) {
@@ -252,7 +249,6 @@ int main() {
         dest = (Vertice*) malloc(sizeof(Vertice));
 
         dest->id = destino;
-        dest->inStack = 0;
         dest->next = tabela[origem - 1];
 
         tabela[origem - 1] = dest;
@@ -271,6 +267,7 @@ int main() {
     free(h);
     free(componentes);
     free(stack);
+    free(inStack);
 
     for (i = 0; i < nvertices; i++) {
         freeVertices(tabela[i]);
