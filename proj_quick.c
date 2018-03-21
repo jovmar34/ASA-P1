@@ -146,15 +146,13 @@ void Tarjan() {
 }
 
 
-int inSCC(int id_comp) {
-    int i;
+int procuraSCC(int id, int inicio, int fim) {
+    int i = (inicio + fim) / 2;
 
-    for (i = 0; i < comps; i++) {
-        if (scc[i]->id == id_comp) {
-            return 1;
-        }
-    }
-    return 0;
+    if (inicio > fim) { return -1; }
+    if (scc[i]->id == id) { return i; }
+    if (scc[i]->id < id) { return procuraSCC(id, i+1, fim); }
+    return procuraSCC(id, inicio, i-1);
 }
 
 
@@ -166,7 +164,7 @@ void criaSCC() {
     comps = 0;
 
     for (i = 0; comps != scc_comps; i++) {
-        if (!inSCC(componentes[i])) {
+        if (procuraSCC(componentes[i], 0, comps-1) == -1) {
             temp = (Vertice*) malloc(sizeof(Vertice));
 
             temp->id = componentes[i];
@@ -184,7 +182,7 @@ void meteNaSCC(int origem, int destino) {
     Vertice *temp;
     Vertice *novo;
 
-    for (i = 0; scc[i]->id != origem; i++);
+    i = procuraSCC(origem, 0, scc_comps-1);
 
 
     for (temp = scc[i]; temp->next != NULL; temp = temp->next) {
