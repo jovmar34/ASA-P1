@@ -18,7 +18,7 @@ Vertice **tabela;
 int nvertices, narcos;
 
 Vertice **scc;
-int comps, scc_comps, scc_arestas;
+int comps, arestas, scc_comps, scc_arestas;
 
 int *componentes;
 
@@ -76,49 +76,6 @@ void tira_stack(int id) {
 }
 
 
-int inSCC(int id_comp) {
-    int i;
-    for (i=0; i < comps; i++) {
-        if (scc[i]->id == id_comp) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-
-void meteNaSCC(int origem, int destino) {
-    int i;
-    Vertice *temp;
-    Vertice *novo;
-
-    for (i = 0; scc[i]->id != origem; i++);
-
-
-    for (temp = scc[i]; temp->next != NULL; temp = temp->next) {
-
-        if (destino < temp->next->id) {
-            novo = (Vertice*) malloc(sizeof(Vertice));
-
-            novo->id = destino;
-            novo->next = temp->next;
-            temp->next = novo;
-            return;
-        }
-        else if (destino == temp->next->id) {
-            scc_arestas--;
-            return;
-        }
-    }
-    
-    novo = (Vertice*) malloc(sizeof(Vertice));
-
-    novo->id = destino;
-    novo->next = NULL;
-    temp->next = novo;
-}
-
-
 int min(int a, int b) {
     return (a < b ? a : b);
 }
@@ -161,7 +118,6 @@ int Tarjan_visit(int i) {
 
 void Tarjan() {
     int i;
-    Vertice *temp;
     
     d = (int*) malloc(nvertices * sizeof(int));
     h = (int*) malloc(nvertices * sizeof(int));
@@ -187,6 +143,24 @@ void Tarjan() {
             Tarjan_visit(i);
         }
     }
+}
+
+
+int inSCC(int id_comp) {
+    int i;
+
+    for (i = 0; i < comps; i++) {
+        if (scc[i]->id == id_comp) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
+void criaSCC() {
+    int i;
+    Vertice *temp;
 
     scc = (Vertice**) malloc(scc_comps * sizeof(Vertice*));
     comps = 0;
@@ -202,8 +176,48 @@ void Tarjan() {
             comps++;
         }
     }
+}
 
-    for (i = 0; i < nvertices; i++) {
+
+void meteNaSCC(int origem, int destino) {
+    int i;
+    Vertice *temp;
+    Vertice *novo;
+
+    for (i = 0; scc[i]->id != origem; i++);
+
+
+    for (temp = scc[i]; temp->next != NULL; temp = temp->next) {
+
+        if (destino < temp->next->id) {
+            novo = (Vertice*) malloc(sizeof(Vertice));
+
+            novo->id = destino;
+            novo->next = temp->next;
+            temp->next = novo;
+            arestas++;
+            return;
+        }
+        else if (destino == temp->next->id) {
+            scc_arestas--;
+            return;
+        }
+    }
+    
+    novo = (Vertice*) malloc(sizeof(Vertice));
+
+    novo->id = destino;
+    novo->next = NULL;
+    temp->next = novo;
+    arestas++;
+}
+
+
+void metePontesSCC() {
+    int i;
+    Vertice *temp;
+
+    for (i = 0; arestas < scc_arestas; i++) {
         for (temp = tabela[i]; temp != NULL; temp = temp->next) {
             if (componentes[i] != componentes[temp->id - 1]) {
                 meteNaSCC(componentes[i], componentes[temp->id -1]);
@@ -255,6 +269,10 @@ int main() {
     }
 
     Tarjan();
+
+    criaSCC();
+
+    metePontesSCC();
 
     printf("%d\n%d\n", scc_comps, scc_arestas);
     for (i=0; i < scc_comps; i++) {
